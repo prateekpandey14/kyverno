@@ -67,8 +67,8 @@ jobs:
         uses: docker/login-action@master
         with:
           registry: ghcr.io
-          username: ${{secrets.registry_username}}
-          password: ${{secrets.registry_password}}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@27d0a4f181a40b142cce983c5393082c365d1480 # v1.2.0
@@ -159,15 +159,15 @@ jobs:
         env:
           COSIGN_EXPERIMENTAL: "true"
           COSIGN_REPOSITORY: "ghcr.io/kyverno/signatures"
-        run: |          
+        run: |
           cosign sign \
           -a "repo=${{ github.repository }}" \
           -a "workflow=${{ github.workflow }}" \
           -a "ref=${{ github.sha }}" \
-          ghcr.io/kyverno/${{inputs.image_name}}@sha256:${{ steps.get-step.outputs.digest }}
+          ghcr.io/${{ github.repository }}/${{inputs.image_name}}@sha256:${{ steps.get-step.outputs.digest }}
 
       - name : Attach SBOM
         if: ${{inputs.tag == 'release'}}
         env:
           COSIGN_REPOSITORY: "ghcr.io/kyverno/sbom"
-        run: cosign attach sbom --sbom ./${{inputs.image_name}}-v*-bom.cdx.json --type cyclonedx  ghcr.io/kyverno/${{inputs.image_name}}@sha256:${{ steps.get-step.outputs.digest }}
+        run: cosign attach sbom --sbom ./${{inputs.image_name}}-v*-bom.cdx.json --type cyclonedx  ghcr.io/${{ github.repository }}/${{inputs.image_name}}@sha256:${{ steps.get-step.outputs.digest }}
