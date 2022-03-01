@@ -4,7 +4,7 @@
 # DEFAULTS
 ##################################
 GIT_VERSION := $(shell git describe --match "v[0-9]*" --tags $(git rev-list --tags --max-count=1))
-GIT_VERSION_DEV := $(shell git describe --match "[0-9].[0-9]-dev*")
+GIT_VERSION_DEV := $(shell git describe --match "[0-9].[0-9]-dev*" --tags $(git rev-list --tags --max-count=1))
 GIT_BRANCH := $(shell git branch | grep \* | cut -d ' ' -f2)
 GIT_HASH := $(GIT_BRANCH)/$(shell git log -1 --pretty=format:"%H")
 TIMESTAMP := $(shell date '+%Y-%m-%d_%I:%M:%S%p')
