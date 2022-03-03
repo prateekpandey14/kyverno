@@ -12,7 +12,7 @@ CONTROLLER_GEN_REQ_VERSION := v0.4.0
 VERSION ?= $(shell git describe --match "v[0-9]*")
 
 REGISTRY?=ghcr.io
-REPO=$(REGISTRY)/kyverno
+REPO=$(REGISTRY)/prateekpandey14
 IMAGE_TAG?=$(GIT_VERSION)
 GOOS ?= $(shell go env GOOS)
 ifeq ($(GOOS), darwin)

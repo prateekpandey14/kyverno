@@ -29,7 +29,7 @@ jobs:
         with:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
-          password: ${{ secrets.GITHUB_TOKEN  }}
+          password: ${{ secrets.CR_PAT  }}
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
@@ -44,9 +44,9 @@ jobs:
 
       - name: Sign image
         run: |
-          export COSIGN_REPOSITORY=ghcr.io/kyverno/signatures
+          export COSIGN_REPOSITORY=ghcr.io/${{ github.repository_owner }}/signatures
           KYVERNO_IMAGE_VERSION=$(git describe --match "v[0-9]*")
-          echo -n "${{ secrets.KYVERNO_COSIGN_PRIVATE_KEY_PASSWORD }}" | cosign sign -key <(echo -n "${{ secrets.KYVERNO_COSIGN_PRIVATE_KEY }}") ghcr.io/${{ github.repository }}/kyvernopre:${KYVERNO_IMAGE_VERSION}
+          echo -n "${{ secrets.CR_PAT }}" | cosign sign -key <(echo -n "${{ secrets.CR_PAT }}") ghcr.io/${{ github.repository_owner }}/kyvernopre:${KYVERNO_IMAGE_VERSION}
 
   push-kyverno:
     runs-on: ubuntu-latest
@@ -72,7 +72,7 @@ jobs:
         with:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
-          password: ${{ secrets.GITHUB_TOKEN  }}
+          password: ${{ secrets.CR_PAT  }}
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
@@ -86,9 +86,9 @@ jobs:
 
       - name: Sign image
         run: |
-          export COSIGN_REPOSITORY=ghcr.io/kyverno/signatures
+          export COSIGN_REPOSITORY=ghcr.io/${{ github.repository_owner }}/signatures
           KYVERNO_IMAGE_VERSION=$(git describe --match "v[0-9]*")
-          echo -n "${{ secrets.KYVERNO_COSIGN_PRIVATE_KEY_PASSWORD }}" | cosign sign -key <(echo -n "${{ secrets.KYVERNO_COSIGN_PRIVATE_KEY }}") ghcr.io/${{ github.repository }}/kyverno:${KYVERNO_IMAGE_VERSION}
+          echo -n "${{ secrets.CR_PAT }}" | cosign sign -key <(echo -n "${{ secrets.CR_PAT }}") ghcr.io/${{ github.repository_owner }}/kyverno:${KYVERNO_IMAGE_VERSION}
 
   push-kyverno-cli:
     runs-on: ubuntu-latest
@@ -114,7 +114,7 @@ jobs:
         with:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
-          password: ${{ secrets.GITHUB_TOKEN  }}
+          password: ${{ secrets.CR_PAT  }}
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
@@ -128,6 +128,6 @@ jobs:
 
       - name: Sign image
         run: |
-          export COSIGN_REPOSITORY=ghcr.io/kyverno/signatures
+          export COSIGN_REPOSITORY=ghcr.io/${{ github.repository_owner }}/signatures
           KYVERNO_IMAGE_VERSION=$(git describe --match "v[0-9]*")
-          echo -n "${{ secrets.KYVERNO_COSIGN_PRIVATE_KEY_PASSWORD }}" | cosign sign -key <(echo -n "${{ secrets.KYVERNO_COSIGN_PRIVATE_KEY }}") ghcr.io/${{ github.repository }}/kyverno-cli:${KYVERNO_IMAGE_VERSION}
+          echo -n "${{ secrets.CR_PAT }}" | cosign sign -key <(echo -n "${{ secrets.CR_PAT }}") ghcr.io/${{ github.repository_owner }}/kyverno-cli:${KYVERNO_IMAGE_VERSION}

@@ -11,7 +11,7 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-          
+
       - name: Set up Go
         uses: actions/setup-go@v2
         with:
@@ -56,8 +56,8 @@ jobs:
 
       - name: Sign image
         run: |
-          export COSIGN_REPOSITORY=ghcr.io/${{ github.repository }}/signatures
-          echo -n "${{ secrets.KYVERNO_COSIGN_PRIVATE_KEY_PASSWORD }}" | cosign sign -key <(echo -n "${{ secrets.KYVERNO_COSIGN_PRIVATE_KEY }}") ghcr.io/${{ github.repository }}/kyvernopre:${KYVERNO_VERSION}
+          export COSIGN_REPOSITORY=ghcr.io/${{ github.repository_owner }}/signatures
+          echo -n "${{ secrets.CR_PAT }}" | cosign sign -key <(echo -n "${{ secrets.CR_PAT }}") ghcr.io/${{ github.repository_owner }}/kyvernopre:${KYVERNO_VERSION}
 
   release-kyverno:
     runs-on: ubuntu-latest
@@ -123,14 +123,14 @@ jobs:
 
       - name: Sign image and SBOM
         run: |
-          export COSIGN_REPOSITORY=ghcr.io/kyverno/signatures
-          echo -n "${{ secrets.KYVERNO_COSIGN_PRIVATE_KEY_PASSWORD }}" | cosign sign -key <(echo -n "${{ secrets.KYVERNO_COSIGN_PRIVATE_KEY }}") ghcr.io/${{ github.repository }}/kyverno:${KYVERNO_VERSION}
-          cosign attach sbom -sbom ./*-bom.cdx.json -type cyclonedx ghcr.io/kyverno/sbom:latest
+          export COSIGN_REPOSITORY=ghcr.io/${{ github.repository_owner }}/signatures
+          echo -n "${{ secrets.CR_PAT }}" | cosign sign -key <(echo -n "${{ secrets.CR_PAT }}") ghcr.io/${{ github.repository }}/kyverno:${KYVERNO_VERSION}
+          cosign attach sbom -sbom ./*-bom.cdx.json -type cyclonedx ghcr.io/${{ github.repository_owner }}/sbom:latest
 
       - name: Trivy Scan Image
         uses: aquasecurity/trivy-action@master
         with: 
-          image-ref: 'ghcr.io/kyverno/kyverno:latest'
+          image-ref: 'ghcr.io/${{ github.repository_owner }}/kyverno:latest'
           format: 'table'
           exit-code: '1'
           ignore-unfixed: true
@@ -188,8 +188,8 @@ jobs:
 
       - name: Sign image
         run: |
-          export COSIGN_REPOSITORY=ghcr.io/kyverno/signatures
-          echo -n "${{ secrets.KYVERNO_COSIGN_PRIVATE_KEY_PASSWORD }}" | cosign sign -key <(echo -n "${{ secrets.KYVERNO_COSIGN_PRIVATE_KEY }}") ghcr.io/${{ github.repository }}/kyverno-cli:${KYVERNO_VERSION}
+          export COSIGN_REPOSITORY=ghcr.io/${{ github.repository_owner }}/signatures
+          echo -n "${{ secrets.CR_PAT }}" | cosign sign -key <(echo -n "${{ secrets.CR_PAT }}") ghcr.io/${{ github.repository }}/kyverno-cli:${KYVERNO_VERSION}
   
   create-release:
     runs-on: ubuntu-latest
@@ -233,7 +233,7 @@ jobs:
           mkdir release
           make release-notes > release/release-notes.out
           cat release/release-notes.out
-          
+
       - name: Run GoReleaser
         uses: goreleaser/goreleaser-action@v2
         with:
