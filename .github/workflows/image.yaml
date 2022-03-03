@@ -46,7 +46,7 @@ jobs:
         run: |
           export COSIGN_REPOSITORY=ghcr.io/${{ github.repository_owner }}/signatures
           KYVERNO_IMAGE_VERSION=$(git describe --match "v[0-9]*")
-          echo -n "${{ secrets.CR_PAT }}" | cosign sign -key <(echo -n "${{ secrets.CR_PAT }}") ghcr.io/${{ github.repository_owner }}/kyvernopre:${KYVERNO_IMAGE_VERSION}
+          echo -n "${{ secrets.KYVERNO_COSIGN_PRIVATE_KEY_PASSWORD }}" | cosign sign -key <(echo -n "${{ secrets.KYVERNO_COSIGN_PRIVATE_KEY }}") ghcr.io/${{ github.repository_owner }}/kyvernopre:${KYVERNO_IMAGE_VERSION}
 
   push-kyverno:
     runs-on: ubuntu-latest
@@ -88,7 +88,7 @@ jobs:
         run: |
           export COSIGN_REPOSITORY=ghcr.io/${{ github.repository_owner }}/signatures
           KYVERNO_IMAGE_VERSION=$(git describe --match "v[0-9]*")
-          echo -n "${{ secrets.CR_PAT }}" | cosign sign -key <(echo -n "${{ secrets.CR_PAT }}") ghcr.io/${{ github.repository_owner }}/kyverno:${KYVERNO_IMAGE_VERSION}
+          echo -n "${{ secrets.KYVERNO_COSIGN_PRIVATE_KEY_PASSWORD }}" | cosign sign -key <(echo -n "${{ secrets.KYVERNO_COSIGN_PRIVATE_KEY }}") ghcr.io/${{ github.repository_owner }}/kyverno:${KYVERNO_IMAGE_VERSION}
 
   push-kyverno-cli:
     runs-on: ubuntu-latest
@@ -130,4 +130,4 @@ jobs:
         run: |
           export COSIGN_REPOSITORY=ghcr.io/${{ github.repository_owner }}/signatures
           KYVERNO_IMAGE_VERSION=$(git describe --match "v[0-9]*")
-          echo -n "${{ secrets.CR_PAT }}" | cosign sign -key <(echo -n "${{ secrets.CR_PAT }}") ghcr.io/${{ github.repository_owner }}/kyverno-cli:${KYVERNO_IMAGE_VERSION}
+          echo -n "${{ secrets.KYVERNO_COSIGN_PRIVATE_KEY_PASSWORD }}" | cosign sign -key <(echo -n "${{ secrets.KYVERNO_COSIGN_PRIVATE_KEY }}") ghcr.io/${{ github.repository_owner }}/kyverno-cli:${KYVERNO_IMAGE_VERSION}

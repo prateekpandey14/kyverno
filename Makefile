@@ -13,6 +13,7 @@ VERSION ?= $(shell git describe --match "v[0-9]*")
 
 REGISTRY?=ghcr.io
 REPO=$(REGISTRY)/prateekpandey14
+export REPO
 IMAGE_TAG?=$(GIT_VERSION)
 GOOS ?= $(shell go env GOOS)
 ifeq ($(GOOS), darwin)
