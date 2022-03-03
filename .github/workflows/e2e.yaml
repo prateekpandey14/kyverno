@@ -84,7 +84,7 @@ jobs:
           kubectl get pods -n kyverno
           ${GITHUB_WORKSPACE}/scripts/verify-deployment.sh -n kyverno  kyverno
           sleep 20
-          
+
           echo ">>> Expose the Kyverno's service's metric server to the host"
           kubectl port-forward svc/kyverno-svc-metrics -n kyverno 8000:8000 &
           echo ">>> Run Kyverno e2e test"
@@ -97,6 +97,8 @@ jobs:
           sed -i -e "s|fullnameOverride:.*|fullnameOverride: kyverno|g" charts/kyverno/values.yaml
           sed -i -e "s|namespace:.*|namespace: kyverno|g" charts/kyverno/values.yaml
           sed -i -e "s|tag:  # replaced in e2e tests|tag: $(git describe --match "v[0-9]*")|" charts/kyverno/values.yaml
+          sed -i -e "s|repository: ghcr.io/kyverno/kyverno  # replaced in e2e tests|repository: ghcr.io/prateekpandey14/kyverno|" charts/kyverno/values.yaml
+          sed -i -e "s|repository: ghcr.io/kyverno/kyvernopre  # replaced pre in e2e tests|repository: ghcr.io/prateekpandey14/kyvernopre|" charts/kyverno/values.yaml
 
       - name: Run chart-testing (install)
         run: |
