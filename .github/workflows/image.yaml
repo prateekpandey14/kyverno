@@ -45,7 +45,7 @@ jobs:
       - name: Sign image
         run: |
           export COSIGN_REPOSITORY=ghcr.io/${{ github.repository_owner }}/signatures
-          KYVERNO_IMAGE_VERSION=$(git describe --match "v[0-9]*")
+          KYVERNO_IMAGE_VERSION=$(git describe --match "v[0-9]*" --tags $(git rev-list --tags --max-count=1))
           echo -n "${{ secrets.KYVERNO_COSIGN_PRIVATE_KEY_PASSWORD }}" | cosign sign -key <(echo -n "${{ secrets.KYVERNO_COSIGN_PRIVATE_KEY }}") ghcr.io/${{ github.repository_owner }}/kyvernopre:${KYVERNO_IMAGE_VERSION}
 
   push-kyverno:
@@ -87,7 +87,7 @@ jobs:
       - name: Sign image
         run: |
           export COSIGN_REPOSITORY=ghcr.io/${{ github.repository_owner }}/signatures
-          KYVERNO_IMAGE_VERSION=$(git describe --match "v[0-9]*")
+          KYVERNO_IMAGE_VERSION=$(git describe --match "v[0-9]*" --tags $(git rev-list --tags --max-count=1))
           echo -n "${{ secrets.KYVERNO_COSIGN_PRIVATE_KEY_PASSWORD }}" | cosign sign -key <(echo -n "${{ secrets.KYVERNO_COSIGN_PRIVATE_KEY }}") ghcr.io/${{ github.repository_owner }}/kyverno:${KYVERNO_IMAGE_VERSION}
 
   push-kyverno-cli:
@@ -129,5 +129,5 @@ jobs:
       - name: Sign image
         run: |
           export COSIGN_REPOSITORY=ghcr.io/${{ github.repository_owner }}/signatures
-          KYVERNO_IMAGE_VERSION=$(git describe --match "v[0-9]*")
+          KYVERNO_IMAGE_VERSION=$(git describe --match "v[0-9]*" --tags $(git rev-list --tags --max-count=1))
           echo -n "${{ secrets.KYVERNO_COSIGN_PRIVATE_KEY_PASSWORD }}" | cosign sign -key <(echo -n "${{ secrets.KYVERNO_COSIGN_PRIVATE_KEY }}") ghcr.io/${{ github.repository_owner }}/kyverno-cli:${KYVERNO_IMAGE_VERSION}

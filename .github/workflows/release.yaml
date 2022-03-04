@@ -124,7 +124,7 @@ jobs:
       - name: Sign image and SBOM
         run: |
           export COSIGN_REPOSITORY=ghcr.io/${{ github.repository_owner }}/signatures
-          echo -n "${{ secrets.KYVERNO_COSIGN_PRIVATE_KEY_PASSWORD }}" | cosign sign -key <(echo -n "${{ secrets.KYVERNO_COSIGN_PRIVATE_KEY }}") ghcr.io/${{ github.repository }}/kyverno:${KYVERNO_VERSION}
+          echo -n "${{ secrets.KYVERNO_COSIGN_PRIVATE_KEY_PASSWORD }}" | cosign sign -key <(echo -n "${{ secrets.KYVERNO_COSIGN_PRIVATE_KEY }}") ghcr.io/${{ github.repository_owner }}/kyverno:${KYVERNO_VERSION}
           cosign attach sbom -sbom ./*-bom.cdx.json -type cyclonedx ghcr.io/${{ github.repository_owner }}/sbom:latest
 
       - name: Trivy Scan Image
@@ -180,7 +180,7 @@ jobs:
 
       - name: Set version
         run: |
-          echo "KYVERNO_VERSION=$(git describe --match "v[0-9]*")"
+          echo "KYVERNO_VERSION=$(git describe --match "v[0-9]*" --tags $(git rev-list --tags --max-count=1))"
 
       - name :  docker images publish
         run: |
@@ -189,8 +189,8 @@ jobs:
       - name: Sign image
         run: |
           export COSIGN_REPOSITORY=ghcr.io/${{ github.repository_owner }}/signatures
-          echo -n "${{ secrets.KYVERNO_COSIGN_PRIVATE_KEY_PASSWORD }}" | cosign sign -key <(echo -n "${{ secrets.KYVERNO_COSIGN_PRIVATE_KEY }}") ghcr.io/${{ github.repository }}/kyverno-cli:${KYVERNO_VERSION}
-  
+          echo -n "${{ secrets.KYVERNO_COSIGN_PRIVATE_KEY_PASSWORD }}" | cosign sign -key <(echo -n "${{ secrets.KYVERNO_COSIGN_PRIVATE_KEY }}") ghcr.io/${{ github.repository_owner }}/kyverno-cli:${KYVERNO_VERSION}
+
   create-release:
     runs-on: ubuntu-latest
     needs:
