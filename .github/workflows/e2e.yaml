@@ -97,8 +97,8 @@ jobs:
           sed -i -e "s|fullnameOverride:.*|fullnameOverride: kyverno|g" charts/kyverno/values.yaml
           sed -i -e "s|namespace:.*|namespace: kyverno|g" charts/kyverno/values.yaml
           sed -i -e "s|tag:  # replaced in e2e tests|tag: $(git describe --match "v[0-9]*")|" charts/kyverno/values.yaml
-          sed -i -e "s|repository: ghcr.io/kyverno/kyverno  # replaced in e2e tests|repository: ghcr.io/prateekpandey14/kyverno|" charts/kyverno/values.yaml
-          sed -i -e "s|repository: ghcr.io/kyverno/kyvernopre  # replaced pre in e2e tests|repository: ghcr.io/prateekpandey14/kyvernopre|" charts/kyverno/values.yaml
+          sed -i -e "s|repository: ghcr.io/kyverno/kyverno  # replaced in e2e tests|repository: ghcr.io/nirmata/kyverno|" charts/kyverno/values.yaml
+          sed -i -e "s|repository: ghcr.io/kyverno/kyvernopre  # replaced pre in e2e tests|repository: ghcr.io/nirmata/kyvernopre|" charts/kyverno/values.yaml
 
       - name: Run chart-testing (install)
         run: |

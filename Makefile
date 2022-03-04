@@ -12,7 +12,7 @@ CONTROLLER_GEN_REQ_VERSION := v0.4.0
 VERSION ?= $(shell git describe --match "v[0-9]*")
 
 REGISTRY?=ghcr.io
-REPO=$(REGISTRY)/prateekpandey14
+REPO=$(REGISTRY)/nirmata
 export REPO
 IMAGE_TAG?=$(GIT_VERSION)
 export IMAGE_TAG
