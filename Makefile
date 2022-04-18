@@ -5,7 +5,7 @@
 ##################################
 
 GIT_VERSION := $(shell git describe --match "v[0-9]*" --tags $(git rev-list --tags --max-count=1))
-GIT_VERSION_DEV := $(shell git describe --match "[0-9].[0-9]-dev*")
+GIT_VERSION_DEV := $(shell git describe --match "[0-9].[0-9]-dev*" --tags $(git rev-list --tags --max-count=1))
 GIT_BRANCH := $(shell git branch | grep \* | cut -d ' ' -f2)
 GIT_HASH := $(GIT_BRANCH)/$(shell git log -1 --pretty=format:"%H")
 TIMESTAMP := $(shell date '+%Y-%m-%d_%I:%M:%S%p')
@@ -22,9 +22,11 @@ endif
 REPO=$(REGISTRY)/$(IMAGE_ORG)
 export REPO
 
-IMAGE_TAG_LATEST_DEV=$(shell git describe --match "[0-9].[0-9]-dev*" | cut -d '-' -f-2)
+IMAGE_TAG_LATEST_DEV=$(shell git describe --match "[0-9].[0-9]-dev*" --tags $(git rev-list --tags --max-count=1))
 IMAGE_TAG_DEV=$(GIT_VERSION_DEV)
 IMAGE_TAG?=$(GIT_VERSION)
+export IMAGE_TAG IMAGE_TAG_DEV
+
 GOOS ?= $(shell go env GOOS)
 ifeq ($(GOOS), darwin)
 SED=gsed
@@ -331,6 +333,8 @@ helm-test-values:
 	sed -i -e "s|fullnameOverride:.*|fullnameOverride: kyverno|g" charts/kyverno/values.yaml
 	sed -i -e "s|namespace:.*|namespace: kyverno|g" charts/kyverno/values.yaml
 	sed -i -e "s|tag:  # replaced in e2e tests.*|tag: $(GIT_VERSION_DEV)|" charts/kyverno/values.yaml
+	sed -i -e "s|repository: ghcr.io/kyverno/kyverno # replaced in e2e tests|repository: ghcr.io/nirmata/kyverno|" charts/kyverno/values.yaml
+	sed -i -e "s|repository: ghcr.io/kyverno/kyvernopre # replaced pre in e2e tests|repository: ghcr.io/nirmata/kyvernopre|" charts/kyverno/values.yaml
 
 # godownloader create downloading script for kyverno-cli
 godownloader:
