@@ -14,7 +14,14 @@ CONTROLLER_GEN_REQ_VERSION := v0.8.0
 VERSION ?= $(shell git describe --match "v[0-9]*")
 
 REGISTRY?=ghcr.io
-REPO=$(REGISTRY)/kyverno
+ifeq (${IMAGE_ORG}, )
+  IMAGE_ORG=nirmata
+  export IMAGE_ORG
+endif
+
+REPO=$(REGISTRY)/$(IMAGE_ORG)
+export REPO
+
 IMAGE_TAG_LATEST_DEV=$(shell git describe --match "[0-9].[0-9]-dev*" | cut -d '-' -f-2)
 IMAGE_TAG_DEV=$(GIT_VERSION_DEV)
 IMAGE_TAG?=$(GIT_VERSION)
