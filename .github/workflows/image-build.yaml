@@ -133,7 +133,7 @@ jobs:
           make docker-build-kyverno
 
       - name: Trivy Scan Image
-        uses: aquasecurity/trivy-action@40c4ca9e7421287d0c5576712fdff370978f9c3c
+        uses: aquasecurity/trivy-action@2b30463ddb3d11724a04e760e020c7d9af24d8b3
         with:
           scan-type: 'fs'
           ignore-unfixed: true
