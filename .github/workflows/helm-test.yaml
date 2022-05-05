@@ -20,7 +20,7 @@ jobs:
       - name: Unshallow
         run: git fetch --prune --unshallow
 
-      - uses: actions/setup-python@f38219332975fe8f9c04cca981d674bf22aea1d3 # v2.3.1
+      - uses: actions/setup-python@98f2ad02fd48d057ee3b4d4f66525b231c3e52b6 # v2.3.1
         with:
           python-version: 3.7
 
