@@ -15,7 +15,7 @@ VERSION ?= $(shell git describe --match "v[0-9]*")
 
 REGISTRY?=ghcr.io
 ifeq (${IMAGE_ORG}, )
-  IMAGE_ORG=nirmata
+  IMAGE_ORG=prateekpandey14
   export IMAGE_ORG
 endif
 
